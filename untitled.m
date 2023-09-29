@@ -3,9 +3,9 @@ clc;
 trOrigin = eye(4)
 %x1 = transl(0,0,10)
 x1 = transl(0,0,-8)
+%Vidushan change 1 
 
-
-
+%Vidushan change 2
 
 tranimate(trOrigin,x1)
 %x2 = x1*trotx(-30*pi/180)
