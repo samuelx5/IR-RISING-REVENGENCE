@@ -1,0 +1,18 @@
+%----SET VARIABLES------
+DobotMagician
+q = zeros(1,5);
+%------------------
+
+
+%----DUMMY SENSOR DATA------
+%Inputs:
+
+%Outputs:
+%------------------
+
+%----Solve Pose from Sensor to robot------
+%Inputs:
+
+%Outputs:
+%------------------
+
