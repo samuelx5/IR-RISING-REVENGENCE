@@ -24,6 +24,7 @@ classdef TM5 < RobotBaseClass
             self.CreateModel();
 			self.model.base = self.model.base.T * baseTr;
             self.model.tool = self.toolTr;
+            
             self.PlotAndColourRobot();
 
             drawnow
