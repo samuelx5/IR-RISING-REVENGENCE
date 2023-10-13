@@ -9,8 +9,7 @@ classdef TM5 < RobotBaseClass
     methods
 %% Constructor
         function self = TM5(baseTr,useTool,toolFilename)
-            test = 'TM5Link1.ply';
-            test.FaceVertexCData = [];
+   
             if nargin < 3
                 if nargin == 2
                     error('If you set useTool you must pass in the toolFilename as well');
