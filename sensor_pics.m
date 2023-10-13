@@ -1,6 +1,6 @@
 function sensor_pics()
 
-    i = 1   
+    i = 1;   
     while i <= 3
         i = i + 1;
         % Make Pipeline object to manage streaming
@@ -43,4 +43,5 @@ function sensor_pics()
         imshow(img);
         title(sprintf("Colorized depth frame from %s", name));
         pause(5);
+    end
 end
