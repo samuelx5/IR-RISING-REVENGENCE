@@ -6,8 +6,9 @@ robot = DobotMagician;
 workspace = [-0.5 0.5 -0.5 0.5 0 0.5];
 q1 = robot.model.ikcon(transl(0,0,0));
 q2 = robot.model.ikcon(transl(0,0,0));
-steps = 10;
-
+speed = 10;
+T1 = eye(4);
+T2 = eye(4);
 
 %------------------
 
@@ -15,11 +16,14 @@ steps = 10;
 %----Main------
 while true 
     if E_Stop == 0
-        T=Dummy_Sensor();
-        q2 = robot.model.ikcon(T);
+        
+        T2=Dummy_Sensor();
+        q2 = robot.model.ikcon(T2);
+        steps = steps2speed(speed, T1, T2);
         qMatrix = jtraj(q1,q2,steps);
         robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
         q1 = q2;
+        T1=T2;
     end
 end
 %------------------
@@ -27,7 +31,7 @@ end
 
 
 %----DUMMY SENSOR DATA------
-%Inputs:
+%Inputs: None
 function T = Dummy_Sensor
     persistent count
     if isempty(count)
@@ -135,7 +139,7 @@ function T = Dummy_Sensor
     count = count + 4;
     end
 end
-%Outputs:
+%Outputs: T Target Poses
 %------------------
 
 %----Solve Pose from Sensor to robot------
@@ -144,5 +148,17 @@ end
 %Outputs:
 %------------------
 
+%----Speed To Steps------
+%Inputs: Speed, T1, T2
+function steps = steps2speed(speed, T1, T2)
+    %steps = max(abs(q2-q1))*(1/speed)
+    %T1(1:3,4)
+    %T2(1:3,4)
+    %dist = sqrt((T2(1,4)-T1(1,4))^2+(T2(2,4)-T1(2,4))^2+(T2(3,4)-T1(3,4))^2);
+    %steps = dist * speed*10
+    steps = 10;
+end
+%Outputs: Steps
+%------------------
 
 
