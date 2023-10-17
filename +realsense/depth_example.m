@@ -33,8 +33,6 @@ function depth_example()
  
  % Display image
  imshow(img);
- I = imread(img);
- imwrite(I, 'img' + i)
  title(sprintf("Colorized depth frame from %s", name));
  
  end

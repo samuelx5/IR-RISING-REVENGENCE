@@ -1,5 +1,5 @@
-original = rgb2gray (imread('Intel RealSense D435I_2023_10_13_19_51_08.png'));
-next = rgb2gray (imread('Intel RealSense D435I_2023_10_13_19_51_17.png'));
+original = rgb2gray (imread('Intel RealSense D435_2023_10_16_17_28_30.png'));
+next = rgb2gray (imread('Intel RealSense D435_2023_10_16_17_28_37.png'));
 
 ptsOriginal = detectSURFFeatures(original);
 ptsNext = detectSURFFeatures(next);
@@ -27,7 +27,7 @@ sc = Tinv(1,1);
 scaleRecovered = sqrt(ss*ss+sc*sc);
 thetaRecovered = atan2(ss,sc)*180/pi;
 
-outputView = imref2d(size(original));
-recovered = imwarp(next,tform,'OutputView',outputView);
-figure;
-imshowpair(original,recovered,'montage');
+%  outputView = imref2d(size(original));
+% recovered = imwarp(next,tform,'OutputView',outputView);
+% figure;
+% imshowpair(original,recovered,'montage');
