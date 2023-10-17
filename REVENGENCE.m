@@ -103,7 +103,7 @@ function T = Dummy_Sensor
 
                    transl(-0.6, 0.7, 0.1);
 
-                   transl(0.5, 0.5, 0.5);
+                   transl(0.6, 0.5, 0.5);
 
                    transl(-0.3, 0.45, 0.25);
 
