@@ -1,5 +1,5 @@
-original = rgb2gray (imread('Intel RealSense D435_2023_10_16_17_28_30.png'));
-next = rgb2gray (imread('Intel RealSense D435_2023_10_16_17_28_37.png'));
+original = rgb2gray (imread('Intel RealSense D435_2023_10_18_15_46_45.png'));
+next = rgb2gray (imread('Intel RealSense D435_2023_10_18_15_46_56.png'));
 
 ptsOriginal = detectSURFFeatures(original);
 ptsNext = detectSURFFeatures(next);
@@ -21,9 +21,9 @@ showMatchedFeatures(original,next,inlierOriginal,inlierNext,'montage');
 title('Matching point (inliers only)');
 legend ('ptsOriginal','ptsNext');
 
-Tinv = tform.invert.T;
-ss = Tinv(2,1);
-sc = Tinv(1,1);
+Tinv = tform.invert.T
+ss = Tinv(2,1)
+sc = Tinv(1,1)
 scaleRecovered = sqrt(ss*ss+sc*sc);
 thetaRecovered = atan2(ss,sc)*180/pi;
 

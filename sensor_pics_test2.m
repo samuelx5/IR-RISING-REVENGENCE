@@ -1,6 +1,6 @@
 function sensor_pics_test2()
 
-    i = 1;   
+    i = 1;
     while i <= 3
         i = i + 1;
         % Make Pipeline object to manage streaming
@@ -15,7 +15,6 @@ function sensor_pics_test2()
     
         % Get frames. We discard the first couple to allow
         % the camera time to settle
-
         for j = 1:5
             fs = pipe.wait_for_frames();
         end
@@ -23,31 +22,21 @@ function sensor_pics_test2()
         % Stop streaming
         pipe.stop();
     
-        % Select depth frame
-        depth = fs.get_depth_frame();
+        % Select color frame (regular image)
+        color = fs.get_color_frame();
     
-        % Get actual depth data
-        data = depth.get_data();
-        
-        % Get width and height of the depth frame
-        width = depth.get_width();
-        height = depth.get_height();
-        
-        % Reshape the data as a 16-bit grayscale image
-        depth_image = typecast(data, 'uint16');
-        depth_image = reshape(depth_image, [width, height])';
-        
-        % Convert the depth data to a grayscale image
-        depth_image = mat2gray(depth_image);
-        
+        % Get actual data and convert into a format imshow can use
+        data = color.get_data();
+        img = permute(reshape(data',[3,color.get_width(),color.get_height()]),[3 2 1]);
         timestamp = datestr(now, 'yyyy_mm_dd_HH_MM_SS');
         filename = sprintf('%s_%s.png', name, timestamp);
-        imwrite(depth_image, filename);
-
-        disp(['Depth image saved as ' filename]);
-        % Display depth image
-        imshow(depth_image);
-        title(sprintf("Depth frame from %s", name));
+        imwrite(img, filename);
+    
+        disp(['Image saved as ' filename]);
+        % Display image
+        imshow(img);
+        title(sprintf("Color image from %s", name));
         pause(5);
     end
 end
+

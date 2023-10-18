@@ -61,8 +61,9 @@ end_effector_position(2) = y.Value;
 %% 
 
 
-end_effector_position = [0.2,0.24,0.35];
+end_effector_position = [0.192,-0.07,0.107];
 %end_effector_position = uicontrol
+end_effector_position2 = [0.20 4,-0.14,0.1];
 
 
 
@@ -71,6 +72,9 @@ end_effector_position = [0.2,0.24,0.35];
 
 end_effector_rotation = [0,0,0];
 dobot.PublishEndEffectorPose(end_effector_position,end_effector_rotation);
+pause(10);
+dobot.PublishEndEffectorPose(end_effector_position2,end_effector_rotation);
+
 
 
 %% Turn on tool
