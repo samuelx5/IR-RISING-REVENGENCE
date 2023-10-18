@@ -8,8 +8,8 @@ ptsNext = detectSURFFeatures(next);
 [featuresNext, validPtsNext] = extractFeatures(next,ptsNext);
 
 indexPairs = matchFeatures(featuresOriginal,featuresNext);
-matchedOriginal = validPtsOriginal(indexPairs(:,1));
-matchedNext = validPtsNext(indexPairs(:,2));
+matchedOriginal = validPtsOriginal(indexPairs(:,1))
+matchedNext = validPtsNext(indexPairs(:,2))
 
 figure;
 showMatchedFeatures(original,next,matchedOriginal,matchedNext,'montage');
@@ -22,12 +22,13 @@ title('Matching point (inliers only)');
 legend ('ptsOriginal','ptsNext');
 
 Tinv = tform.invert.T
+
 ss = Tinv(2,1)
 sc = Tinv(1,1)
 scaleRecovered = sqrt(ss*ss+sc*sc);
 thetaRecovered = atan2(ss,sc)*180/pi;
 
-%  outputView = imref2d(size(original));
+% outputView = imref2d(size(original));
 % recovered = imwarp(next,tform,'OutputView',outputView);
 % figure;
 % imshowpair(original,recovered,'montage');

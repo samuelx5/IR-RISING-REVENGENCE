@@ -1,7 +1,7 @@
 function sensor_pics_test2()
 
     i = 1;
-    while i <= 3
+    while i <= 15
         i = i + 1;
         % Make Pipeline object to manage streaming
         pipe = realsense.pipeline();
