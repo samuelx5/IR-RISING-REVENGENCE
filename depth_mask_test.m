@@ -15,7 +15,7 @@ function depth_mask_test()
     % Get frames. We discard the first couple to    allow
     % the camera time to settle
     %for i = 1:5
-        fs = pipe.wait_for_frames();
+    fs = pipe.wait_for_frames();
     %end
     
     % Stop streaming
@@ -60,10 +60,12 @@ function depth_mask_test()
     [~, idx] = max(allBlobAreas);
     centroid = zeros(0, 2);
     hold on;
-
+    scalefactor = 795;
     if ~isempty(blobMeasurements(idx))
-        centroid = blobMeasurements(idx).Centroid
+        centroid = blobMeasurements(idx).Centroid;
         plot(centroid(1), centroid(2), 'r+', 'MarkerSize', 10, 'LineWidth', 2);
+        pose = centroid(1)/scalefactor-0.4,centroid(2)/795, 0.2;
+        %636 x 480
         pause(0.1)
     end
 
