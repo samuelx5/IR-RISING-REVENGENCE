@@ -1,4 +1,4 @@
-function depth_mask_test()
+function T = depth_mask_test()
     % Make Pipeline object to manage streaming
     pipe = realsense.pipeline();
     
@@ -11,7 +11,7 @@ function depth_mask_test()
     % Get streaming device's name
     dev = profile.get_device();
     name = dev.get_info(realsense.camera_info.name);
-    while(1)
+    %while(1)
     % Get frames. We discard the first couple to    allow
     % the camera time to settle
     %for i = 1:5
@@ -39,7 +39,7 @@ function depth_mask_test()
 
     % Display image
     %imshow(img);
-    title(sprintf("Colorized depth frame from %s", name));
+    %title(sprintf("Colorized depth frame from %s", name));
 
     %Igray = rgb2gray(img);
     %threshold = graythresh(Igray);
@@ -51,7 +51,7 @@ function depth_mask_test()
     %   (img(:,:,2) >= greenThreshold(1)) & (img(:,:,2) <= greenThreshold(2)) & ...
     %   (img(:,:,3) >= blueThreshold(1)) & (img(:,:,3) <= blueThreshold(2));
 
-
+    positional = [0.2,0.2,0.2]
     rgbImage = img;
     [BW, maskedRGBImage] = createMask(rgbImage);
     labeledImage = bwlabel(BW);
@@ -59,20 +59,23 @@ function depth_mask_test()
     allBlobAreas = [blobMeasurements.Area];
     [~, idx] = max(allBlobAreas);
     centroid = zeros(0, 2);
-    hold on;
+    %hold on;
     scalefactor = 795;
     if ~isempty(blobMeasurements(idx))
         centroid = blobMeasurements(idx).Centroid;
-        plot(centroid(1), centroid(2), 'r+', 'MarkerSize', 10, 'LineWidth', 2);
-        pose = centroid(1)/scalefactor-0.4,centroid(2)/795, 0.2;
+        %plot(centroid(1), centroid(2), 'r+', 'MarkerSize', 10, 'LineWidth', 2);
+        %positional = [centroid(1)/scalefactor-0.4,centroid(2)/795, 0.2];
         %636 x 480
-        pause(0.1)
+
+        positional = [centroid(1)/scalefactor-0.4,centroid(2)/795, 0.2]
+        
+        %pause(3)
     end
 
 
     %figure;
     %filledMask = regionfill('holes',BW );
-    imshow(BW);
+    %imshow(BW);
     %figure;
     %imshow(maskedRGBImage);
 
@@ -80,8 +83,11 @@ function depth_mask_test()
 
 
     %imshow(maskedRgbImage);
+
     
-    end
+    %end
+    
+    T = transl(positional);
 end
 
 function [BW,maskedRGBImage] = createMask(RGB)

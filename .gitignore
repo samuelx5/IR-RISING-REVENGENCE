@@ -2,4 +2,6 @@
 Test2.m
 TESTFILE.m
 REVENGENCE.asv
+rvctools
 *.asv
+.DS_Store
