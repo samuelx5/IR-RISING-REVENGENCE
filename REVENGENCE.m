@@ -1,6 +1,7 @@
 %----SET VARIABLES------
-clear
+%clear
 clc
+
 E_Stop = 0;
 robot = DobotMagician;
 workspace = [-0.5 0.5 -0.5 0.5 0 0.5];
@@ -10,6 +11,16 @@ speed = 10;
 T1 = eye(4);
 T2 = eye(4);
 
+
+
+
+
+pipe = realsense.pipeline();
+colorizer = realsense.colorizer();
+profile = pipe.start();
+dev = profile.get_device();
+name = dev.get_info(realsense.camera_info.name);
+
 %------------------
 
 
@@ -17,9 +28,11 @@ T2 = eye(4);
 while true 
     if E_Stop == 0
         
-        T2=Dummy_Sensor();
+        %T2=Dummy_Sensor();
+        T2=depth_mask_test(pipe,colorizer,profile,dev,name);
+
         q2 = robot.model.ikcon(T2);
-        steps = steps2speed(speed, T1, T2);
+        steps = 2;%steps2speed(speed, T1, T2);
         qMatrix = jtraj(q1,q2,steps);
         robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
         q1 = q2;
@@ -156,7 +169,7 @@ function steps = steps2speed(speed, T1, T2)
     %T2(1:3,4)
     %dist = sqrt((T2(1,4)-T1(1,4))^2+(T2(2,4)-T1(2,4))^2+(T2(3,4)-T1(3,4))^2);
     %steps = dist * speed*10
-    steps = 10;
+    steps = 1;
 end
 %Outputs: Steps
 %------------------
