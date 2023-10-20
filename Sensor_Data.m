@@ -2,10 +2,14 @@
 function T = Sensor_Data(pipe,colorizer,profile,dev,name)
     % Make Pipeline object to manage streaming
     %pipe = realsense.pipeline();
-    
+    persistent count
+    if isempty(count)
+        count = 1;
+        first_trigger = 0;
+    end
     % Make Colorizer object to prettify depth output
     %colorizer = realsense.colorizer();
-    figure(2)
+    
     % Start streaming on an arbitrary camera with default settings
     %profile = pipe.start();
     %positional = [0.2,0.2,0.2];
@@ -16,34 +20,43 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
     % Get frames. We discard the first couple to    allow
     % the camera time to settle
     %for i = 1:5
-    fs = pipe.wait_for_frames();
+    %fs = pipe.wait_for_frames();
     %end
-    
+    fs = pipe.wait_for_frames();
     % Stop streaming
     %pipe.stop();
 
     % Select depth frame
     depth = fs.get_depth_frame();
     
+    
     % Colorize depth frame
-    %color = colorizer.colorize(depth);
-     color = fs.get_color_frame();
+    depth_color = colorizer.colorize(depth);
+    color = fs.get_color_frame();
 
 
     % Get actual data and convert into a format imshow can use
     % (Color data arrives as [R, G, B, R, G, B, ...] vector)
     data = color.get_data();
-    img = flip(flip(permute(reshape(data',[3,color.get_width(),color.get_height()]),[3 2 1]),2),1);
+    img = permute(reshape(data',[3,color.get_width(),color.get_height()]),[3 2 1]);
+    %figure(3)
+    depth_data = depth_color.get_data();
+    
+
+
+    
+    depth_img = permute(reshape(depth_data',[3,depth_color.get_width(),depth_color.get_height()]),[3 2 1]);
+    %imshow(depth_img);
    
 
 
-
+    
     % Display image
     %imshow(img);
     %title(sprintf("Colorized depth frame from %s", name));
 
 
-    
+    %figure(2)
     rgbImage = img;
     [BW, maskedRGBImage] = createMask(rgbImage);
     labeledImage = bwlabel(BW);
@@ -51,30 +64,38 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
     allBlobAreas = [blobMeasurements.Area];
     [~, idx] = max(allBlobAreas);
     centroid = zeros(0, 2);
+    depth_pixel = depth.project_color_pixel_to_depth_pixel(200 ,232)
     
     scalefactor = 795;
-    imshow(maskedRGBImage);
+    %imshow(maskedRGBImage);
+    imshow(depth_img)
     hold on;
 
 
 
     if ~isempty(blobMeasurements(idx))
         centroid = blobMeasurements(idx).Centroid;
-        plot(centroid(1), centroid(2), 'r+', 'MarkerSize', 10, 'LineWidth', 2)
-        
-        %636 x 480  
+        plot(centroid(1)*(848/1920), centroid(2)*(480/1080), 'r+', 'MarkerSize', 10, 'LineWidth', 2)
 
-        positional = [centroid(1),centroid(2)]
+        %848 x 480  
+
+        
+        positional = [centroid(1),centroid(2)];
 
         positional = [centroid(2)/scalefactor-0.4,centroid(1)/795, 0.1];
+        x = int16(centroid(1));
+        x=min(x,847);
+        y = int16(centroid(2));
+        y=min(y,479);
+        distance = depth.get_distance(x, y)
         %plot(centroid(2)/scalefactor-0.4,centroid(1)/795)
         old_pos = positional;
         first_trigger = 1;
 
-    elseif isempty(blobMeasurements(idx)) && first_trigger == 1
+    %elseif first_trigger == 1
         
     else
-        positional = [0.2,0.2,0.2]
+        positional = [0.2,0.2,0.2];
     end
 
     %imshow(BW);

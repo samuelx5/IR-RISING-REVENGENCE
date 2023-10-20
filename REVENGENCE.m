@@ -21,6 +21,8 @@ profile = pipe.start();
 dev = profile.get_device();
 name = dev.get_info(realsense.camera_info.name);
 
+
+
 %------------------
 
 
@@ -40,7 +42,7 @@ while true
         q2 = robot.model.ikcon(T2);
         steps = 2;%steps2speed(speed, T1, T2);
         qMatrix = jtraj(q1,q2,steps);
-        robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
+        %robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
         q1 =q2;
         T1=T2;
     end
