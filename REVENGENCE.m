@@ -29,7 +29,7 @@ while true
     if E_Stop == 0
         
         %T2=Dummy_Sensor();
-        T2=depth_mask_test();
+        T2=depth_mask_test(pipe,colorizer,profile,dev,name);
 
         q2 = robot.model.ikcon(T2);
         steps = 2;%steps2speed(speed, T1, T2);
