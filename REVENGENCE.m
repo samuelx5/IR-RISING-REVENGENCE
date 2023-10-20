@@ -25,17 +25,23 @@ name = dev.get_info(realsense.camera_info.name);
 
 
 %----Main------
+
+for i = 1:5
+    fs = pipe.wait_for_frames();
+end
+    
 while true 
     if E_Stop == 0
+        figure(1)
         
         %T2=Dummy_Sensor();
-        T2=depth_mask_test(pipe,colorizer,profile,dev,name);
+        T2=Sensor_Data(pipe,colorizer,profile,dev,name);
 
         q2 = robot.model.ikcon(T2);
         steps = 2;%steps2speed(speed, T1, T2);
         qMatrix = jtraj(q1,q2,steps);
         robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
-        q1 = q2;
+        q1 =q2;
         T1=T2;
     end
 end
