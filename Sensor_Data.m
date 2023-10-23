@@ -1,30 +1,31 @@
 
 function T = Sensor_Data(pipe,colorizer,profile,dev,name)
+    %This part is already done in revengence.m, it remains in comments for
+    %debugging
     % Make Pipeline object to manage streaming
+    % Make Colorizer object to prettify depth output
     %pipe = realsense.pipeline();
+    %colorizer = realsense.colorizer();
+    % Start streaming on an arbitrary camera with default settings
+    %profile = pipe.start();
+    % Get streaming device's name
+    %dev = profile.get_device();
+    %name = dev.get_info(realsense.camera_info.name);
+    
+    %Persistence is for error checking system, ignore it
     persistent count
     if isempty(count)
         count = 1;
         first_trigger = 0;
     end
-    % Make Colorizer object to prettify depth output
-    %colorizer = realsense.colorizer();
     
-    % Start streaming on an arbitrary camera with default settings
-    %profile = pipe.start();
-    %positional = [0.2,0.2,0.2];
-    % Get streaming device's name
-    %dev = profile.get_device();
-    %name = dev.get_info(realsense.camera_info.name);
+    
+    
+    %While loop only for debugging
     %while(1)
-    % Get frames. We discard the first couple to    allow
-    % the camera time to settle
-    %for i = 1:5
-    %fs = pipe.wait_for_frames();
-    %end
+
     fs = pipe.wait_for_frames();
-    % Stop streaming
-    %pipe.stop();
+
 
     % Select depth frame
     depth = fs.get_depth_frame();
@@ -46,16 +47,9 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
 
     
     depth_img = permute(reshape(depth_data',[3,depth_color.get_width(),depth_color.get_height()]),[3 2 1]);
-    %imshow(depth_img);
-   
 
 
-    
-    % Display image
-    %imshow(img);
-    %title(sprintf("Colorized depth frame from %s", name));
-
-
+    %Some wizardry, ignore for now
     %figure(2)
     rgbImage = img;
     [BW, maskedRGBImage] = createMask(rgbImage);
@@ -64,16 +58,20 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
     allBlobAreas = [blobMeasurements.Area];
     [~, idx] = max(allBlobAreas);
     centroid = zeros(0, 2);
+    %Failed attempts to find function to get the right pixels
     %depth_pixel = depth.project_color_pixel_to_depth_pixel(200 ,232)
     %depth_pixel = depth_image(200, 232)
     
     scalefactor = 795;
     %imshow(maskedRGBImage);
+    figure(1);
+    imshow(maskedRGBImage)
+    figure(2);
     imshow(depth_img)
     hold on;
 
 
-
+    % Check if centoid is empty, if it is it wont do any tracking
     if ~isempty(blobMeasurements(idx))
         centroid = blobMeasurements(idx).Centroid;
         plot(centroid(1)*(848/1920), centroid(2)*(480/1080), 'r+', 'MarkerSize', 10, 'LineWidth', 2)
@@ -102,6 +100,10 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
         %plot(centroid(2)/scalefactor-0.4,centroid(1)/795)
         old_pos = positional;
         first_trigger = 1;
+    
+        
+    %Ignore the below, its just error catching
+
 
     %elseif first_trigger == 1
         
@@ -115,7 +117,8 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
 
     
     %end
-    
+
+    %This is the output return value
     T = transl(positional);
 end
 
