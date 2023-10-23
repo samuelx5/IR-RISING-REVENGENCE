@@ -64,7 +64,8 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
     allBlobAreas = [blobMeasurements.Area];
     [~, idx] = max(allBlobAreas);
     centroid = zeros(0, 2);
-    depth_pixel = depth.project_color_pixel_to_depth_pixel(200 ,232)
+    %depth_pixel = depth.project_color_pixel_to_depth_pixel(200 ,232)
+    %depth_pixel = depth_image(200, 232)
     
     scalefactor = 795;
     %imshow(maskedRGBImage);
