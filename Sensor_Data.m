@@ -89,6 +89,16 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name)
         y = int16(centroid(2));
         y=min(y,479);
         distance = depth.get_distance(x, y)
+
+
+
+
+        f = 595;
+        p_x = 324.7;
+        p_y = 248.2;
+
+        x_coord = ((centroid(1) - p_x) * distance)/f
+        y_coord = ((centroid(2) - p_y) * distance)/f
         %plot(centroid(2)/scalefactor-0.4,centroid(1)/795)
         old_pos = positional;
         first_trigger = 1;

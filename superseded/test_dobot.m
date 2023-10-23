@@ -43,20 +43,46 @@ currentEndEffectorQuat = [currentEndEffectorPoseMsg.Pose.Orientation.W, currentE
  quat2eul(currentEndEffectorQuat)
 
 %% Publish custom end effector pose
+% f = figure;
+% p = uipanel(f,'Position',[0.1 0.1 0.35 0.65]);
+% hold on
+% q = uipanel(f,'Position',[0.1 0.1 0.35 0.65]);
+% hold on
+% y = uicontrol(p,'Style','slider');
+% hold on
+% x = uicontrol(q,'Style','slider');
+% y.Value = 0.03
+% x.Value=0.2;
+% hold on
+% 
+% end_effector_position(1) = x.Value;
+% end_effector_position(2) = y.Value;
 f = figure;
-p = uipanel(f,'Position',[0.1 0.1 0.35 0.65]);
-hold on
-q = uipanel(f,'Position',[0.1 0.1 0.35 0.65]);
-hold on
-y = uicontrol(p,'Style','slider');
-hold on
-x = uicontrol(q,'Style','slider');
-y.Value = 0.03
-x.Value=0.2;
-hold on
+
+% Create a panel to contain the sliders
+p = uipanel(f, 'Position', [0.1, 0.1, 0.35, 0.65]);
+
+% Create sliders for x,y and z values
+x = uicontrol(p, 'Style', 'slider', 'Position', [10, 100, 120, 3]);
+y = uicontrol(p, 'Style', 'slider', 'Position', [10, 70, 120, 3]);
+z = uicontrol(p, 'Style', 'slider', 'Position', [10, 40, 120, 3]);
 
 end_effector_position(1) = x.Value;
 end_effector_position(2) = y.Value;
+end_effector_position(3) = z.Value;
+
+while(1)
+    end_effector_rotation = [0,0,0];
+    dobot.PublishEndEffectorPose(end_effector_position,end_effector_rotation);
+end
+
+
+
+
+
+
+
+
 
 %% 
 
