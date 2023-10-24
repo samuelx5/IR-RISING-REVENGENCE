@@ -16,8 +16,16 @@ T2 = eye(4);
 
 
 pipe = realsense.pipeline();
+
+cfg = realsense.config();
+cfg.enable_stream(realsense.stream.color, 848, 480, realsense.format.rgb8);
+cfg.enable_stream(realsense.stream.depth, 848, 480, realsense.format.z16);
+align_to = realsense.stream.color;
+align = realsense.align(align_to);
+
+
 colorizer = realsense.colorizer();
-profile = pipe.start();
+profile = pipe.start(cfg);
 dev = profile.get_device();
 name = dev.get_info(realsense.camera_info.name);
 
@@ -37,12 +45,12 @@ while true
         figure(1)
         
         %T2=Dummy_Sensor();
-        T2=Sensor_Data(pipe,colorizer,profile,dev,name);
+        T2=Transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
 
         q2 = robot.model.ikcon(T2);
         steps = 2;%steps2speed(speed, T1, T2);
         qMatrix = jtraj(q1,q2,steps);
-        %robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
+        robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
         q1 =q2;
         T1=T2;
     end

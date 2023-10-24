@@ -1,5 +1,5 @@
 
-function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
+function T = Sensor_Data(pipe,colorizer,profile,dev,name)
     %This part is already done in revengence.m, it remains in comments for
     %debugging
     % Make Pipeline object to manage streaming
@@ -12,11 +12,6 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
     %dev = profile.get_device();
     %name = dev.get_info(realsense.camera_info.name);
     
-
-
-
-
-
     %Persistence is for error checking system, ignore it
     persistent count
     if isempty(count)
@@ -30,21 +25,14 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
     %while(1)
 
     fs = pipe.wait_for_frames();
-    aligned_frames = align.process(fs);
-    
-
-
-
-
 
 
     % Select depth frame
-    %depth = fs.get_depth_frame();
-    depth_frame = aligned_frames.get_depth_frame();
+    depth = fs.get_depth_frame();
     
     
     % Colorize depth frame
-    depth_color = colorizer.colorize(depth_frame);
+    depth_color = colorizer.colorize(depth);
     color = fs.get_color_frame();
 
 
@@ -75,9 +63,9 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
     %depth_pixel = depth_image(200, 232)
     
     scalefactor = 795;
-
-    %figure(1);
-    %imshow(maskedRGBImage)
+    %imshow(maskedRGBImage);
+    figure(1);
+    imshow(maskedRGBImage)
     figure(2);
     imshow(depth_img)
     hold on;
@@ -86,26 +74,30 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
     % Check if centoid is empty, if it is it wont do any tracking
     if ~isempty(blobMeasurements(idx))
         centroid = blobMeasurements(idx).Centroid;
-        plot(centroid(1), centroid(2), 'r+', 'MarkerSize', 10, 'LineWidth', 2)
+        plot(centroid(1)*(848/1920), centroid(2)*(480/1080), 'r+', 'MarkerSize', 10, 'LineWidth', 2)
 
         %848 x 480  
 
         
-        
+        positional = [centroid(1),centroid(2)];
+
+        positional = [centroid(2)/scalefactor-0.4,centroid(1)/795, 0.1];
         x = int16(centroid(1));
         x=min(x,847);
         y = int16(centroid(2));
         y=min(y,479);
-        distance = depth_frame.get_distance(x, y);
+        distance = depth.get_distance(x, y)
+
+
+
+
         f = 595;
         p_x = 324.7;
         p_y = 248.2;
-        x_coord = ((centroid(1) - p_x) * distance)/f;
-        y_coord = ((centroid(2) - p_y) * distance)/f;
+
+        x_coord = ((centroid(1) - p_x) * distance)/f
+        y_coord = ((centroid(2) - p_y) * distance)/f
         %plot(centroid(2)/scalefactor-0.4,centroid(1)/795)
-
-        positional = [x_coord,y_coord,distance]
-
         old_pos = positional;
         first_trigger = 1;
     
@@ -127,7 +119,7 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
     %end
 
     %This is the output return value
-    T = positional;
+    T = transl(positional);
 end
 
 function [BW,maskedRGBImage] = createMask(RGB)
