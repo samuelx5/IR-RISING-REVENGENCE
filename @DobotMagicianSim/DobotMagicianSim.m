@@ -1,4 +1,4 @@
-classdef DobotMagician < RobotBaseClass
+classdef DobotMagicianSim < RobotBaseClass
     %% DobotMagician
     % This class is based on the DobotMagician. 
     % URL: https://en.dobot.cn/products/education/magician.html
@@ -9,7 +9,7 @@ classdef DobotMagician < RobotBaseClass
     % that this matches the real robot!
 
     properties(Access =public)   
-        plyFileNameStem = 'DobotMagician';
+        plyFileNameStem = 'DobotMagicianSim';
 
         %> defaultRealQ 
         defaultRealQ  = [0,pi/4,pi/4,0,0];
@@ -17,7 +17,7 @@ classdef DobotMagician < RobotBaseClass
 
     methods (Access = public) 
 %% Constructor 
-        function self = DobotMagician(baseTr)
+        function self = DobotMagicianSim(baseTr)
 			self.CreateModel();
             if nargin == 1			
 				self.model.base = self.model.base.T * baseTr;
@@ -63,7 +63,7 @@ classdef DobotMagician < RobotBaseClass
         % Convert the real Q to the model Q
         function modelQ = RealQToModelQ(realQ)
             modelQ = realQ;
-            modelQ(3) = DobotMagician.ComputeModelQ3GivenRealQ2and3( realQ(2), realQ(3) );
+            modelQ(3) = DobotMagicianSim.ComputeModelQ3GivenRealQ2and3( realQ(2), realQ(3) );
             modelQ(4) = pi - realQ(2) - modelQ(3);    
         end
         
@@ -77,7 +77,7 @@ classdef DobotMagician < RobotBaseClass
         % Convert the model Q to the real Q
         function realQ = ModelQToRealQ( modelQ )
             realQ = modelQ;
-            realQ(3) = DobotMagician.ComputeRealQ3GivenModelQ2and3( modelQ(2), modelQ(3) );
+            realQ(3) = DobotMagicianSim.ComputeRealQ3GivenModelQ2and3( modelQ(2), modelQ(3) );
         end
         
 %% RealQ3GivenModelQ2and3

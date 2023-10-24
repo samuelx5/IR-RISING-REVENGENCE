@@ -50,18 +50,35 @@ name = dev.get_info(realsense.camera_info.name);
 
 %% 
 while(1)
-
+    %Sensor_Data(pipe,colorizer,profile,dev,name,align)
     Sensor = Sensor_Data(pipe,colorizer,profile,dev,name,align);
-    Sensor(1)=max(0.25, Sensor(1))
-    Sensor(1)=min(0.19, Sensor(1))
-    Sensor(2)=max(-0.04, Sensor(2))
-    Sensor(2)=max(-0.04, Sensor(2))
-    Sensor(3) = Sensor(3)-0.3
-    if Sensor(3)>0.16 
-        Sensor(3) = 0.16
-    end
+    % Sensor(1)=max(0.25, Sensor(1));
+    % Sensor(1)=min(0.19, Sensor(1));
+    % Sensor(2)=min(-0.1, Sensor(2));
+    % Sensor(2)=max(0.1, Sensor(2));
+    if Sensor(1)>0.25 
+        Sensor(1) = 0.25;
+    elseif Sensor(1) < 0.19
+        Sensor(1) = 0.19;
 
-     end_effector_position = Sensor;
+    end
+    if Sensor(2)>0.08 
+        Sensor(2) = 0.08;
+    elseif Sensor(2) < -0.08
+        Sensor(2) = -0.08;
+
+    end
+    Sensor(3) = Sensor(3) - 0.2;
+    if Sensor(3)>0.16 
+        Sensor(3) = 0.16;
+    elseif Sensor(3) < 0
+        Sensor(3) = 0;
+
+    end
+    %Sensor
+    
+     end_effector_position = Sensor
+     %pause(1);
     % end_effector_position = uicontrol
     % end_effector_position2 = [0.20 ,-0.14,0.1];
     
@@ -70,9 +87,9 @@ while(1)
     %c.Value = end_effector_position(2);
     
     
-    end_effector_rotation = [0,0,0];
-    dobot.PublishEndEffectorPose(end_effector_position,end_effector_rotation);
-    %pause(10);
+     end_effector_rotation = [0,0,0];
+     dobot.PublishEndEffectorPose(end_effector_position,end_effector_rotation);
+     pause(1);
     %dobot.PublishEndEffectorPose(end_effector_position2,end_effector_rotation);
 end
 

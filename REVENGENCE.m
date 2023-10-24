@@ -3,7 +3,7 @@
 clc
 
 E_Stop = 0;
-robot = DobotMagician;
+robot = DobotMagicianSim;
 workspace = [-0.5 0.5 -0.5 0.5 0 0.5];
 q1 = robot.model.ikcon(transl(0,0,0));
 q2 = robot.model.ikcon(transl(0,0,0));
@@ -45,7 +45,7 @@ while true
         figure(1)
         
         %T2=Dummy_Sensor();
-        T2=Transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
+        T2=transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
 
         q2 = robot.model.ikcon(T2);
         steps = 2;%steps2speed(speed, T1, T2);
