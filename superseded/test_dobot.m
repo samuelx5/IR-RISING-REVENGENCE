@@ -87,9 +87,9 @@ end
 %% 
 
 
-end_effector_position = [0.192,-0.07,0.107];
-%end_effector_position = uicontrol
-end_effector_position2 = [0.20 4,-0.14,0.1];
+end_effector_position = [0.102,-0.24,0.03];
+% end_effector_position = uicontrol
+end_effector_position2 = [0.20 ,-0.14,0.1];
 
 
 
