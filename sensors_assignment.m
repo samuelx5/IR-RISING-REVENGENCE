@@ -116,7 +116,7 @@ dobot.PublishEndEffectorPose(end_effector_position3,end_effector_rotation);
 
 % Get the initial joint positions
 jointStateSubscriber = rossubscriber('/dobot_magician/joint_states'); % Create a ROS Subscriber to the topic joint_states
-pause(2); % Allow some time for a message to appear
+pause(4); % Allow some time for a message to appear
 initialJointPositions = jointStateSubscriber.LatestMessage.Position % Get the latest message
 
 % Record the starting time
@@ -130,10 +130,10 @@ dobot.PublishTargetJoint(newJointPositions);
 % pause(2);  % Adjust the time delay as needed
 
 % Get the final joint positions
-finalJointPositions = jointStateSubscriber.LatestMessage.Position;
+finalJointPositions = jointStateSubscriber.LatestMessage.Position
 
 % Calculate the displacement
-displacement = finalJointPositions - initialJointPositions;
+displacement = finalJointPositions - initialJointPositions
 
 % Calculate the time elapsed
 endTime = now;
@@ -146,5 +146,9 @@ disp("Joint Speeds: ");
 disp(speed);
 
 % Clean up, stop the robot, or perform other actions as needed
+
+%% 
+jointVelocities = [0.1, 0.2, 0.3, 0.4]; % Replace with your desired joint velocities
+dobot.SetJointVelocities(jointVelocities);
 
 

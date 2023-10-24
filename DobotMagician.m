@@ -132,6 +132,17 @@ classdef DobotMagician < handle
             self.eMotorMsg.Data = [enabled,velocity];
             send(self.eMotorPub,self.eMotorMsg);
        end
+
+       function SetJointVelocities(self, jointVelocities)
+           % Create a ROS message for joint velocity commands
+           jointVelocityMsg = rosmessage('sensor_msgs/JointState');
+           jointVelocityMsg.Header.Stamp = rostime('now');
+           jointVelocityMsg.Name = self.jointStateSub.LatestMessage.Name;  % Use the joint names received from the robot
+           jointVelocityMsg.Velocity = jointVelocities;
+
+           % Publish the joint velocity commands
+           send(self.targetJointTrajPub, jointVelocityMsg);
+       end
    end
    
    methods(Access = private)
