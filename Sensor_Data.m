@@ -88,6 +88,7 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
     if ~isempty(blobMeasurements(idx))
         centroid = blobMeasurements(idx).Centroid;
         plot(centroid(1), centroid(2), 'r+', 'MarkerSize', 10, 'LineWidth', 2)
+        hold off
 
         %848 x 480  
 
@@ -103,14 +104,16 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
         p_y = 248.2;
         x_coord = ((centroid(1) - p_x) * distance)/f;
         y_coord = ((centroid(2) - p_y) * distance)/f;
-        x_end = 0.06*x_coord + 0.213;
-        y_end = 0.24*y_coord - 0.004;
+        % x_end = 0.06*x_coord + 0.213;
+        % y_end = 0.24*y_coord - 0.004;
+        x_end = 0.233*x_coord + 0.107;
+        y_end = 0.8358*y_coord + 0.0125;
 
         % x_end = x_coord /20
         % y_end = y_coord /
         %plot(centroid(2)/scalefactor-0.4,centroid(1)/795)
 
-        positional = [x_end,y_end,distance];
+        positional = [x_end,y_end,distance - 0.3];
 
         old_pos = positional;
         first_trigger = 1;
@@ -136,7 +139,7 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
     T = positional;
 end
 
-function [BW,maskedRGBImage] = createMaskUS(RGB)
+function [BW,maskedRGBImage] = createMask(RGB)
 %createMask  Threshold RGB image using auto-generated code from colorThresholder app.
 %  [BW,MASKEDRGBIMAGE] = createMask(RGB) thresholds image RGB using
 %  auto-generated code from the colorThresholder app. The colorspace and
@@ -178,7 +181,7 @@ maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
 end
 
 
-function [BW,maskedRGBImage] = createMask(RGB)
+function [BW,maskedRGBImage] = createMaskUS(RGB)
 %createMask  Threshold RGB image using auto-generated code from colorThresholder app.
 %  [BW,MASKEDRGBIMAGE] = createMask(RGB) thresholds image RGB using
 %  auto-generated code from the colorThresholder app. The colorspace and

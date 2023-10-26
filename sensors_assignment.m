@@ -55,26 +55,26 @@ while(1)
     % Sensor(1)=max(0.25, Sensor(1));
     % Sensor(1)=min(0.19, Sensor(1));
     % Sensor(2)=min(-0.1, Sensor(2));
-    % Sensor(2)=max(0.1, Sensor(2));
-    if Sensor(1)>0.25 
-        Sensor(1) = 0.25;
-    elseif Sensor(1) < 0.19
-        Sensor(1) = 0.19;
-
-    end
-    if Sensor(2)>0.08 
-        Sensor(2) = 0.08;
-    elseif Sensor(2) < -0.08
-        Sensor(2) = -0.08;
-
-    end
-    Sensor(3) = Sensor(3) - 0.2;
-    if Sensor(3)>0.16 
-        Sensor(3) = 0.16;
-    elseif Sensor(3) < 0
-        Sensor(3) = 0;
-
-    end
+    % % Sensor(2)=max(0.1, Sensor(2));
+    % if Sensor(1)>0.25 
+    %     Sensor(1) = 0.25;
+    % elseif Sensor(1) < 0.19
+    %     Sensor(1) = 0.19;
+    % 
+    % end
+    % if Sensor(2)>0.08 
+    %     Sensor(2) = 0.08;
+    % elseif Sensor(2) < -0.08
+    %     Sensor(2) = -0.08;
+    % 
+    % end
+    % Sensor(3) = Sensor(3) - 0.2;
+    % if Sensor(3)>0.16 
+    %     Sensor(3) = 0.16;
+    % elseif Sensor(3) < 0
+    %     Sensor(3) = 0;
+    % 
+    % end
     %Sensor
     
      end_effector_position = Sensor
@@ -107,10 +107,10 @@ end_effector_position2 = [0.2, 0, 0];
 
 end_effector_rotation = [0,0,0];
 dobot.PublishEndEffectorPose(end_effector_position,end_effector_rotation);
-pause(5);
-dobot.PublishEndEffectorPose(end_effector_position2,end_effector_rotation);
-pause(5);
-dobot.PublishEndEffectorPose(end_effector_position3,end_effector_rotation);
+% pause(5);
+% dobot.PublishEndEffectorPose(end_effector_position2,end_effector_rotation);
+% pause(5);
+% dobot.PublishEndEffectorPose(end_effector_position3,end_effector_rotation);
 %% 
 
 
