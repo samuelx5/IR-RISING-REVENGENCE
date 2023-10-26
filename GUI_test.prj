@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration file="C:\Users\viduk\OneDrive\Documents\Sensors\IR-RISING-REVENGENCE\GUI_test.prj" location="C:\Users\viduk\OneDrive\Documents\Sensors\IR-RISING-REVENGENCE" name="GUI_test" target="target.mlapps" target-name="Package App">
+  <configuration file="C:\Users\jhan2\OneDrive\Documents\MATLAB\IR-RISING-REVENGENCE\GUI_test.prj" location="C:\Users\jhan2\OneDrive\Documents\MATLAB\IR-RISING-REVENGENCE" name="GUI_test" target="target.mlapps" target-name="Package App">
     <param.appname>GUI_test</param.appname>
     <param.authnamewatermark />
     <param.email />
@@ -8,7 +8,7 @@
     <param.icons />
     <param.summary />
     <param.description />
-    <param.screenshot>C:\Users\viduk\AppData\Local\Temp\tp66c498b4_c308_4902_a397_bee558cc0c7c.png</param.screenshot>
+    <param.screenshot />
     <param.version>1.0</param.version>
     <param.products.name />
     <param.products.id />
@@ -24,6 +24,7 @@
       <param.icons />
       <param.summary />
       <param.description />
+      <param.screenshot />
       <param.version />
       <param.products.name />
       <param.products.id />
@@ -170,7 +171,7 @@
     <fileset.resources />
     <fileset.package />
     <build-deliverables>
-      <file location="C:\Users\viduk\OneDrive\Documents\Sensors" name="IR-RISING-REVENGENCE" optional="false">C:\Users\viduk\OneDrive\Documents\Sensors\IR-RISING-REVENGENCE</file>
+      <file location="C:\Users\jhan2\OneDrive\Documents\MATLAB" name="IR-RISING-REVENGENCE" optional="false">C:\Users\jhan2\OneDrive\Documents\MATLAB\IR-RISING-REVENGENCE</file>
     </build-deliverables>
     <workflow />
     <matlab>
