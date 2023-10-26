@@ -4,19 +4,19 @@
 clc
 
 %--------ROS-----------
-rosshutdown;
-rosinit('192.168.27.1');
-dobot = DobotMagician();
-
-[safetyStatePublisher,safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
-safetyStateMsg.Data = 2;
-send(safetyStatePublisher,safetyStateMsg);
-
-safetyStatusSubscriber = rossubscriber('/dobot_magician/safety_status');
-
-currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
-
-jointStateSubscriber = rossubscriber('/dobot_magician/joint_states');
+% rosshutdown;
+% rosinit('192.168.27.1');
+% dobot = DobotMagician();
+% 
+% [safetyStatePublisher,safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
+% safetyStateMsg.Data = 2;
+% send(safetyStatePublisher,safetyStateMsg);
+% 
+% safetyStatusSubscriber = rossubscriber('/dobot_magician/safety_status');
+% 
+% currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
+% 
+% jointStateSubscriber = rossubscriber('/dobot_magician/joint_states');
 
 %---------------------
 
@@ -55,16 +55,16 @@ name = dev.get_info(realsense.camera_info.name);
 
 
 %% ----Main------
-
-for i = 1:5
-    fs = pipe.wait_for_frames();
-end
-    
+% 
+% for i = 1:5
+%     fs = pipe.wait_for_frames();
+% end
+% 
 while true 
     if E_Stop == 0
         figure(1)
         
-        currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
+        %currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
 
         %T2=Dummy_Sensor();
         T2=transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
@@ -73,22 +73,22 @@ while true
 
 
         %----------- TEST
-        jointTarget = q2(1:4)
-
-        
-
-        [targetJointTrajPub,targetJointTrajMsg] = rospublisher('/dobot_magician/target_joint_states');
-        trajectoryPoint = rosmessage("trajectory_msgs/JointTrajectoryPoint");
-        trajectoryPoint.Positions = jointTarget;
-        targetJointTrajMsg.Points = trajectoryPoint;
-        send(targetJointTrajPub,targetJointTrajMsg);
-        pause(3)
+        % jointTarget = q2(1:4)
+        % 
+        % 
+        % 
+        % [targetJointTrajPub,targetJointTrajMsg] = rospublisher('/dobot_magician/target_joint_states');
+        % trajectoryPoint = rosmessage("trajectory_msgs/JointTrajectoryPoint");
+        % trajectoryPoint.Positions = jointTarget;
+        % targetJointTrajMsg.Points = trajectoryPoint;
+        % send(targetJointTrajPub,targetJointTrajMsg);
+        % pause(3)
         %------------------
 
-        %qMatrix = jtraj(q1,q2,steps);
-        %robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
-        %q1 =q2;
-        %T1=T2;
+        qMatrix = jtraj(q1,q2,steps);
+        robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
+        q1 =q2;
+        T1=T2;
     end
 end
 %------------------
