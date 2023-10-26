@@ -12,6 +12,10 @@ dobot = DobotMagician();
 safetyStateMsg.Data = 2;
 send(safetyStatePublisher,safetyStateMsg);
 
+safetyStatusSubscriber = rossubscriber('/dobot_magician/safety_status');
+
+currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
+
 jointStateSubscriber = rossubscriber('/dobot_magician/joint_states');
 
 %---------------------
@@ -29,26 +33,20 @@ T1 = eye(4);
 T2 = eye(4);
 
 
-link(1).qlim = [-0.8 -0.01];
-link(2).qlim = [-360 360]*pi/180;
-link(3).qlim = [-180 0]*pi/180;
-link(4).qlim = [-150 0]*pi/180;
-link(5).qlim = [-360 360]*pi/180;
-link(6).qlim = [-360 360]*pi/180;
-link(7).qlim = [-360 360]*pi/180;
+
 %-------------------
 
 %----Sensor Settup------
-% pipe = realsense.pipeline();
-% cfg = realsense.config();
-% cfg.enable_stream(realsense.stream.color, 848, 480, realsense.format.rgb8);
-% cfg.enable_stream(realsense.stream.depth, 848, 480, realsense.format.z16);
-% align_to = realsense.stream.color;
-% align = realsense.align(align_to);
-% colorizer = realsense.colorizer();
-% profile = pipe.start(cfg);
-% dev = profile.get_device();
-% name = dev.get_info(realsense.camera_info.name);
+pipe = realsense.pipeline();
+cfg = realsense.config();
+cfg.enable_stream(realsense.stream.color, 848, 480, realsense.format.rgb8);
+cfg.enable_stream(realsense.stream.depth, 848, 480, realsense.format.z16);
+align_to = realsense.stream.color;
+align = realsense.align(align_to);
+colorizer = realsense.colorizer();
+profile = pipe.start(cfg);
+dev = profile.get_device();
+name = dev.get_info(realsense.camera_info.name);
 %-----------------
 
 
@@ -59,17 +57,17 @@ link(7).qlim = [-360 360]*pi/180;
 %% ----Main------
 
 for i = 1:5
-   % fs = pipe.wait_for_frames();
+    fs = pipe.wait_for_frames();
 end
     
 while true 
     if E_Stop == 0
         figure(1)
         
+        currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
 
-
-        T2=Dummy_Sensor();
-        %T2=transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
+        %T2=Dummy_Sensor();
+        T2=transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
         steps = 5;%steps2speed(speed, T1, T2);
         q2 = robot.model.ikcon(T2);
 
@@ -77,13 +75,14 @@ while true
         %----------- TEST
         jointTarget = q2(1:4)
 
+        
 
         [targetJointTrajPub,targetJointTrajMsg] = rospublisher('/dobot_magician/target_joint_states');
         trajectoryPoint = rosmessage("trajectory_msgs/JointTrajectoryPoint");
         trajectoryPoint.Positions = jointTarget;
         targetJointTrajMsg.Points = trajectoryPoint;
         send(targetJointTrajPub,targetJointTrajMsg);
-        pause(5)
+        pause(3)
         %------------------
 
         %qMatrix = jtraj(q1,q2,steps);

@@ -105,6 +105,7 @@ function T = Sensor_Data(pipe,colorizer,profile,dev,name, align)
         y_coord = ((centroid(2) - p_y) * distance)/f;
         x_end = 0.06*x_coord + 0.213;
         y_end = 0.24*y_coord - 0.004;
+
         % x_end = x_coord /20
         % y_end = y_coord /
         %plot(centroid(2)/scalefactor-0.4,centroid(1)/795)
