@@ -21,26 +21,26 @@ classdef TM5 < RobotBaseClass
                 toolTrData = load([toolFilename,'.mat']);
                 self.toolTr = toolTrData.tool;
                 self.toolFilename = [toolFilename,'.ply'];
+                rotate(toolFilename, 90)
             end
             self.CreateModel();
 			self.model.base = self.model.base.T * baseTr;
             self.model.tool = self.toolTr;
-            
             self.PlotAndColourRobot();
-
+            
             drawnow
         end
-
 %% CreateModel
         function CreateModel(self)
-            link(1) = Link('d',0.1452,'a',0,'alpha',pi/2,'qlim',deg2rad([-360 360]), 'offset',0);
-            link(2) = Link('d',0,'a',-0.329,'alpha',0,'qlim', deg2rad([-360 360]), 'offset',0);
-            link(3) = Link('d',0,'a',-0.3115,'alpha',0,'qlim', deg2rad([-360 360]), 'offset', 0);
-            link(4) = Link('d',0.106,'a',0,'alpha',pi/2,'qlim',deg2rad([-360 360]),'offset', 0);
-            link(5) = Link('d',0.106,'a',0,'alpha',-pi/2,'qlim',deg2rad([-360,360]), 'offset',0);
-            link(6) = Link('d',0.1132,'a',0,'alpha',0,'qlim',deg2rad([-360,360]), 'offset', 0);
+            link(1) = Link('d',0.1451 ,'a',0 ,'alpha',-pi/2 ,'qlim',deg2rad([-277 277]), 'offset',0);
+            link(2) = Link('d',0 ,'a',0.329,'alpha',0,'qlim', deg2rad([-100 100]), 'offset',-pi/2);
+            link(3) = Link('d',0,'a',0.3115,'alpha',0,'qlim', deg2rad([-100 100]), 'offset', 0);
+            link(4) = Link('d',-0.1222,'a',0,'alpha',pi/2,'qlim',deg2rad([-100 100]),'offset', pi/2);
+            link(5) = Link('d',0.106,'a',0,'alpha',pi/2 ,'qlim',deg2rad([-100 100]), 'offset',0);
+            link(6) = Link('d',0.1144,'a',0,'alpha',0 ,'qlim',deg2rad([-277,277]), 'offset', 0);
+
              
             self.model = SerialLink(link,'name',self.name);
-        end      
+        end   
     end
 end
