@@ -6,8 +6,8 @@ q = zeros(1,6);
 r = zeros(1,5);
 robot.model.base = transl([-0.5,0,0]);
 bot.model.base = transl([0.5,0,0]);
-% robot.model.plot(q,'workspace',workspace,'scale',scale);
-% bot.model.plot(r,'workspace',workspace,'scale',scale); 
+robot.model.plot(q,'workspace',workspace,'scale',scale);
+bot.model.plot(r,'workspace',workspace,'scale',scale); 
 
 % T1 = transl(0.5,0.4,0.5);
 % q1 = robot.model.ikcon(T1);
