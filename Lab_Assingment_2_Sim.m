@@ -1,29 +1,40 @@
 robot = TM5;
-bot = DobotMagician;
+bot = DobotMagicianSim;
 workspace = [-1.5, 1.5,-1.5,1.5,-0.01,1.5];
 scale = 0.5;
 q = zeros(1,6);
 r = zeros(1,5);
 robot.model.base = transl([-0.5,0,0]);
 bot.model.base = transl([0.5,0,0]);
-robot.model.plot(q,'workspace',workspace,'scale',scale);
-bot.model.plot(r,'workspace',workspace,'scale',scale); 
+% robot.model.plot(q,'workspace',workspace,'scale',scale);
+% bot.model.plot(r,'workspace',workspace,'scale',scale); 
+ planeNormal = [-1,0,0];
+ planePoint = [1.5,0,0];
 
-T1 = transl(-0.1,0,0.5);
-q1 = robot.model.ikcon(T1);
-T2 = transl(-0.9,0.4,0.3);
-q2 = robot.model.ikcon(T2);
-T3 = transl(0.4,0,0.3);
-q3 = bot.model.ikcon(T3);
-T4 = transl(0.7,0.1,0.3);
-q4 = bot.model.ikcon(T4);
+ % Then if we have a line (perhaps a robot's link) represented by two points:
+ lineStartPoint = [-0.5,0,0];
+ lineEndPoint = [3.5,0,0];
 
-steps = 50;
+ % Then we can use the function to calculate the point of
+ % intersection between the line (line) and plane (obstacle)
+ [intersectionPoints,check] = LinePlaneIntersection(planeNormal,planePoint,lineStartPoint,lineEndPoint);
 
-qMatrix = jtraj(q1,q2,steps);
-qMatrix1 = jtraj(q3,q4,steps);
+ % The returned values and their means are as follows:
+ % (1) intersectionPoints, which shows the xyz point where the line
+ intersectionPoints
 
-figure(1)
-robot.model.plot(qMatrix,'workspace',workspace,'trail','r-') 
-bot.model.plot(qMatrix1, 'workspace',workspace,'trail','r-')
+ % (2) check intersects the plane check, which is defined as follows:
+ check
+ % Check == 0 if there is no intersection
+ % Check == 1 if there is a line plane intersection between the two points
+ % Check == 2 if the segment lies in the plane (always intersecting)
+ % Check == 3 if there is intersection point which lies outside line segment
 
+ % We can visualise this as follows by first creating and
+ % plotting a plane, which conforms to the previously defined planePoint and planeNormal
+
+[Y,Z] = meshgrid(-0.7:0.1:-0.3,-0.8:0.1:-0.4);
+X = repmat(1.5,size(Y,1),size(Y,2));
+surf(X,Y,Z);
+
+hold on;
