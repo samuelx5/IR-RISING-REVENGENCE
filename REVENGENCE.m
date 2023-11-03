@@ -73,7 +73,7 @@ b = RMRC_test(bot);
 % 
 while true 
     if E_Stop == 0
-       for i = 1: 5 : size(b)- 4 
+       
 
             figure(1)
             hold on
@@ -84,7 +84,7 @@ while true
         % T2=transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
         steps = 5;%steps2speed(speed, T1, T2);
             q2 = robot.model.ikcon(T2);
-            qMatrixTM5 = b(i:i + 4, 1:6)
+            qMatrixTM5 = Dummy_SensorB()
 
 
         %----------- TEST
@@ -105,7 +105,7 @@ while true
             bot.model.plot(qMatrixTM5,'workspace', workspace, 'scale', scale, 'trail','r-')
             q1 =q2;
             T1=T2;
-       end
+       
     end
 end
 %------------------
@@ -231,6 +231,31 @@ end
 %Outputs:
 %------------------
 %% 
+function TB = Dummy_SensorB
+    b = RMRC_test(TM5);
+    persistent count
+    if isempty(count)
+        count = 1;
+    end
+
+  targetPoses = [b(1:5, 1:6); 
+                b(6:10, 1:6);
+                b(11:15, 1:6);
+                b(16:20, 1:6);
+                b(21:25, 1:6);
+                b(26:30, 1:6);
+                b(31:35, 1:6);
+                b(36:40, 1:6);
+                b(41:45, 1:6)
+                b(46:49, 1:6)];
+     
+  TB = targetPoses([count:count+4],:);
+    
+    if count <= size(targetPoses, 1)-4         
+    count = count + 5;
+    end
+end
+
 
 %% ----Speed To Steps------
 %Inputs: Speed, T1, T2
