@@ -32,6 +32,41 @@ r = zeros(1,6);
 q = zeros(1,5);
 robot.model.base = transl([0.25,0,0]);
 bot.model.base = transl([-0.75,0,0]);
+figure(1)
+hold on
+PlaceObject('fireExtinguisherElevated.ply',[2,0,-0.5]);
+            % Place emergency button
+PlaceObject('emergencyStopButton.ply',[2.5,1,0]);
+% Position of operator
+PlaceObject('personMaleOld.ply',[2.5,0,-0.5]);
+% Baby outside the fence
+PlaceObject('baby.ply',[-2.5,0,-0.5]);
+% Place table
+PlaceObject('tableBrown2.1x1.4x0.5m.ply',[0,0,-0.5]);
+
+% Place Fences
+h_1 = PlaceObject('fenceFinal.ply',[2,0,-0.6]);
+verts = [get(h_1,'Vertices'), ones(size(get(h_1,'Vertices'),1),1)] * trotz(pi/2);
+verts(:,1) = verts(:,1) * 8;
+set(h_1,'Vertices',verts(:,1:3))
+
+h_2 = PlaceObject('fenceFinal.ply',[-2,0,-0.5]);
+verts = [get(h_2,'Vertices'), ones(size(get(h_2,'Vertices'),1),1)] * trotz(pi/2);
+verts(:,1) = verts(:,1) * 8;
+set(h_2,'Vertices',verts(:,1:3))
+
+h_3 = PlaceObject('fenceFinal.ply',[0,0,-0.5]);
+verts = [get(h_3,'Vertices'), ones(size(get(h_3,'Vertices'),1),1)];
+verts(:,2) = verts(:,2) * 8;
+verts(:,1) = verts(:,1) + 2;
+set(h_3,'Vertices',verts(:,1:3))
+
+h_4 = PlaceObject('fenceFinal.ply',[0,0,-0.5]);
+verts = [get(h_4,'Vertices'), ones(size(get(h_4,'Vertices'),1),1)];
+verts(:,2) = verts(:,2) * 8;
+verts(:,1) = verts(:,1) - 2;
+set(h_4,'Vertices',verts(:,1:3)) 
+
 robot.model.plot(q,'workspace',workspace,'scale',scale);
 bot.model.plot(r,'workspace',workspace,'scale',scale); 
 % workspace = [-0.5 0.5 -0.5 1 0 1];
@@ -77,38 +112,38 @@ while true
 
             figure(1)
             hold on
-            PlaceObject('fireExtinguisherElevated.ply',[2,0,-0.5]);
-            % Place emergency button
-            PlaceObject('emergencyStopButton.ply',[2.5,1,0]);
-            % Position of operator
-            PlaceObject('personMaleOld.ply',[2.5,0,-0.5]);
-            % Baby outside the fence
-            PlaceObject('baby.ply',[-2.5,0,-0.5]);
-            % Place table
-            PlaceObject('tableBrown2.1x1.4x0.5m.ply',[0,0,-0.5]);
-
-            % Place Fences
-            h_1 = PlaceObject('fenceFinal.ply',[2,0,-0.6]);
-            verts = [get(h_1,'Vertices'), ones(size(get(h_1,'Vertices'),1),1)] * trotz(pi/2);
-            verts(:,1) = verts(:,1) * 8;
-            set(h_1,'Vertices',verts(:,1:3))
-
-            h_2 = PlaceObject('fenceFinal.ply',[-2,0,-0.5]);
-            verts = [get(h_2,'Vertices'), ones(size(get(h_2,'Vertices'),1),1)] * trotz(pi/2);
-            verts(:,1) = verts(:,1) * 8;
-            set(h_2,'Vertices',verts(:,1:3))
-
-            h_3 = PlaceObject('fenceFinal.ply',[0,0,-0.5]);
-            verts = [get(h_3,'Vertices'), ones(size(get(h_3,'Vertices'),1),1)];
-            verts(:,2) = verts(:,2) * 8;
-            verts(:,1) = verts(:,1) + 2;
-            set(h_3,'Vertices',verts(:,1:3))
-
-            h_4 = PlaceObject('fenceFinal.ply',[0,0,-0.5]);
-            verts = [get(h_4,'Vertices'), ones(size(get(h_4,'Vertices'),1),1)];
-            verts(:,2) = verts(:,2) * 8;
-            verts(:,1) = verts(:,1) - 2;
-            set(h_4,'Vertices',verts(:,1:3)) 
+            % PlaceObject('fireExtinguisherElevated.ply',[2,0,-0.5]);
+            % % Place emergency button
+            % PlaceObject('emergencyStopButton.ply',[2.5,1,0]);
+            % % Position of operator
+            % PlaceObject('personMaleOld.ply',[2.5,0,-0.5]);
+            % % Baby outside the fence
+            % PlaceObject('baby.ply',[-2.5,0,-0.5]);
+            % % Place table
+            % PlaceObject('tableBrown2.1x1.4x0.5m.ply',[0,0,-0.5]);
+            % 
+            % % Place Fences
+            % h_1 = PlaceObject('fenceFinal.ply',[2,0,-0.6]);
+            % verts = [get(h_1,'Vertices'), ones(size(get(h_1,'Vertices'),1),1)] * trotz(pi/2);
+            % verts(:,1) = verts(:,1) * 8;
+            % set(h_1,'Vertices',verts(:,1:3))
+            % 
+            % h_2 = PlaceObject('fenceFinal.ply',[-2,0,-0.5]);
+            % verts = [get(h_2,'Vertices'), ones(size(get(h_2,'Vertices'),1),1)] * trotz(pi/2);
+            % verts(:,1) = verts(:,1) * 8;
+            % set(h_2,'Vertices',verts(:,1:3))
+            % 
+            % h_3 = PlaceObject('fenceFinal.ply',[0,0,-0.5]);
+            % verts = [get(h_3,'Vertices'), ones(size(get(h_3,'Vertices'),1),1)];
+            % verts(:,2) = verts(:,2) * 8;
+            % verts(:,1) = verts(:,1) + 2;
+            % set(h_3,'Vertices',verts(:,1:3))
+            % 
+            % h_4 = PlaceObject('fenceFinal.ply',[0,0,-0.5]);
+            % verts = [get(h_4,'Vertices'), ones(size(get(h_4,'Vertices'),1),1)];
+            % verts(:,2) = verts(:,2) * 8;
+            % verts(:,1) = verts(:,1) - 2;
+            % set(h_4,'Vertices',verts(:,1:3)) 
 
             
         % currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
