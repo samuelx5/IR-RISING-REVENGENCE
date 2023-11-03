@@ -1,4 +1,4 @@
-b = RMRC_test(TM5);
+b = RMRC_test(TM5)
   targetPoses = [b(1:5, 1:6); 
                 b(6:10, 1:6);
                 b(11:15, 1:6);
@@ -9,7 +9,7 @@ b = RMRC_test(TM5);
                 b(36:40, 1:6);
                 b(41:45, 1:6)
                 b(46:49, 1:6)];
-  TB = targetPoses(1:5, :)
-  size(targetPoses, 1)-4 
+  TB = targetPoses(1:5, :);
+  size(targetPoses, 1)-4 ;
 b(1:5, 1:6)
 size(b, 1)
