@@ -79,7 +79,7 @@ while true
             hold on
             PlaceObject('fireExtinguisherElevated.ply',[2,0,-0.5]);
             % Place emergency button
-            PlaceObject('emergencyStopButton.ply',[2.5,0,0]);
+            PlaceObject('emergencyStopButton.ply',[2.5,1,0]);
             % Position of operator
             PlaceObject('personMaleOld.ply',[2.5,0,-0.5]);
             % Baby outside the fence
