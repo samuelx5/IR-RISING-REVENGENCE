@@ -4,19 +4,19 @@ clear
 clc
 
 % --------ROS-----------
-rosshutdown;
-rosinit('192.168.27.1');
-dobot = DobotMagician();
-
-[safetyStatePublisher,safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
-safetyStateMsg.Data = 2;
-send(safetyStatePublisher,safetyStateMsg);
-
-safetyStatusSubscriber = rossubscriber('/dobot_magician/safety_status');
-
-% currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
-
-jointStateSubscriber = rossubscriber('/dobot_magician/joint_states');
+% rosshutdown;
+% rosinit('192.168.27.1');
+% dobot = DobotMagician();
+% 
+% [safetyStatePublisher,safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
+% safetyStateMsg.Data = 2;
+% send(safetyStatePublisher,safetyStateMsg);
+% 
+% safetyStatusSubscriber = rossubscriber('/dobot_magician/safety_status');
+% 
+% % currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
+% 
+% jointStateSubscriber = rossubscriber('/dobot_magician/joint_states');
 
 % ---------------------
 
@@ -24,29 +24,40 @@ jointStateSubscriber = rossubscriber('/dobot_magician/joint_states');
 
 %----Sim Settup------
 E_Stop = 0;
+bot = TM5;
 robot = DobotMagicianSim;
-workspace = [-0.5 0.5 -0.5 0.5 0 0.5];
+workspace = [-1.5, 1.5,-1.5,1.5, 0,5];
+scale = 0.5;
+r = zeros(1,6);
+q = zeros(1,5);
+robot.model.base = transl([0,0,0]);
+bot.model.base = transl([1,0,0]);
+robot.model.plot(q,'workspace',workspace,'scale',scale);
+bot.model.plot(r,'workspace',workspace,'scale',scale); 
+% workspace = [-0.5 0.5 -0.5 1 0 1];
 q1 = robot.model.ikcon(transl(0,0,0));
 q2 = robot.model.ikcon(transl(0,0,0));
 speed = 10;
 T1 = eye(4);
 T2 = eye(4);
+b = RMRC_test(bot);
+
 
 
 
 %-------------------
 
-%----Sensor Settup------
-pipe = realsense.pipeline();
-cfg = realsense.config();
-cfg.enable_stream(realsense.stream.color, 848, 480, realsense.format.rgb8);
-cfg.enable_stream(realsense.stream.depth, 848, 480, realsense.format.z16);
-align_to = realsense.stream.color;
-align = realsense.align(align_to);
-colorizer = realsense.colorizer();
-profile = pipe.start(cfg);
-dev = profile.get_device();
-name = dev.get_info(realsense.camera_info.name);
+% %----Sensor Settup------
+% pipe = realsense.pipeline();
+% cfg = realsense.config();
+% cfg.enable_stream(realsense.stream.color, 848, 480, realsense.format.rgb8);
+% cfg.enable_stream(realsense.stream.depth, 848, 480, realsense.format.z16);
+% align_to = realsense.stream.color;
+% align = realsense.align(align_to);
+% colorizer = realsense.colorizer();
+% profile = pipe.start(cfg);
+% dev = profile.get_device();
+% name = dev.get_info(realsense.camera_info.name);
 %-----------------
 
 
@@ -62,33 +73,39 @@ name = dev.get_info(realsense.camera_info.name);
 % 
 while true 
     if E_Stop == 0
-        figure(1)
-        pause(5)
+       
+
+            figure(1)
+            hold on
+            
         % currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data;
 
-        % T2=Dummy_Sensor();
-        T2=transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
+            T2=Dummy_Sensor();
+        % T2=transl(Sensor_Data(pipe,colorizer,profile,dev,name,align));
         steps = 5;%steps2speed(speed, T1, T2);
-        q2 = robot.model.ikcon(T2);
+            q2 = robot.model.ikcon(T2);
+            qMatrixTM5 = Dummy_SensorB()
 
 
         %----------- TEST
-        jointTarget = q2(1:4)
-        Sensor_Data(pipe,colorizer,profile,dev,name,align)
-
-
-        [targetJointTrajPub,targetJointTrajMsg] = rospublisher('/dobot_magician/target_joint_states');
-        trajectoryPoint = rosmessage("trajectory_msgs/JointTrajectoryPoint");
-        trajectoryPoint.Positions = jointTarget;
-        targetJointTrajMsg.Points = trajectoryPoint;
-        send(targetJointTrajPub,targetJointTrajMsg);
+        % jointTarget = q2(1:4)
+        % Sensor_Data(pipe,colorizer,profile,dev,name,align)
+        % 
+        % 
+        % [targetJointTrajPub,targetJointTrajMsg] = rospublisher('/dobot_magician/target_joint_states');
+        % trajectoryPoint = rosmessage("trajectory_msgs/JointTrajectoryPoint");
+        % trajectoryPoint.Positions = jointTarget;
+        % targetJointTrajMsg.Points = trajectoryPoint;
+        % send(targetJointTrajPub,targetJointTrajMsg);
         % pause(5)
         %------------------
 
-        % qMatrix = jtraj(q1,q2,steps);
-        % robot.model.plot(qMatrix,'workspace', workspace, 'trail','r-')
-        % q1 =q2;
-        % T1=T2;
+            qMatrix = jtraj(q1,q2,steps)
+            robot.model.plot(qMatrix,'workspace', workspace, 'scale', scale,  'trail','r-')
+            bot.model.plot(qMatrixTM5,'workspace', workspace, 'scale', scale, 'trail','r-')
+            q1 =q2;
+            T1=T2;
+       
     end
 end
 %------------------
@@ -213,6 +230,33 @@ end
 
 %Outputs:
 %------------------
+%% 
+function TB = Dummy_SensorB
+    b = RMRC_test(TM5);
+    persistent count
+    if isempty(count)
+        count = 1;
+    end
+
+  targetPoses = [b(1:5, 1:6); 
+                b(6:10, 1:6);
+                b(11:15, 1:6);
+                b(16:20, 1:6);
+                b(21:25, 1:6);
+                b(26:30, 1:6);
+                b(31:35, 1:6);
+                b(36:40, 1:6);
+                b(41:45, 1:6)
+                b(46:49, 1:6)];
+     
+  TB = targetPoses([count:count+4],:);
+    
+    if count <= size(targetPoses, 1)-4         
+    count = count + 5;
+    end
+end
+
+
 %% ----Speed To Steps------
 %Inputs: Speed, T1, T2
 function steps = steps2speed(speed, T1, T2)
